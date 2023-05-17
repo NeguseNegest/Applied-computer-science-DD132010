@@ -1,52 +1,74 @@
-import sys
+# Dictionary for memoization
+computed_numbers = {}
 
-# Skip the first input line (number of test cases)
-skip = input()
+# Function to calculate smallest possible number with n matchsticks
+def get_min(n):
+    # If we have previously computed this, return the stored value
+    if n in computed_numbers:
+        return computed_numbers[n]
 
-# Precomputed smallest numbers for matchstick counts 2 to 17
-small = {
-    2: 1,
-    3: 7,
-    4: 4,
-    5: 2,
-    6: 6,
-    7: 8,
-    8: 10,
-    9: 18,
-    10: 22,
-    11: 20,
-    12: 28,
-    13: 68,
-    17: 200
-}
+    # Array of smallest numbers that can be made with 2 to 20 matchsticks
+    sol = [1, 7, 4, 2, 6, 8, 10, 18, 22, 20, 28, 68, 88, 108, 188, 200, 208, 288, 688, 888]
 
-# For each line of input
-for line in sys.stdin:
-    # Convert the line to an integer
-    n = int(line)
-    # If the matchstick count is in the precomputed dictionary, print the corresponding smallest number
-    if n in small:
-        print(small[n], end=' ')
-    # Otherwise, compute the smallest number based on the count of matchsticks
-    else:
-        # k is the nearest key in the dictionary that is less than or equal to the matchstick count
-        k = n % 7 + 7
-        # Special case: if k is 10, add 7 to it (because 10 is not a key in the dictionary)
-        if k == 10:
-            k += 7
-        # Start with the smallest number corresponding to k
-        lead = small[k]
-        # The number of '8's to append to the number is the integer quotient of (n - k) / 7
-        pad = (n - k) // 7
-        # Append as many '8's as calculated above
-        for _ in range(pad):
-            lead = lead * 10 + 8
-        # Print the smallest number
-        print(lead, end=' ')
+    # If n is less than or equal to 20, we can directly index into the array
+    if n <= 20:
+        result = str(sol[n - 2])
+        computed_numbers[n] = result
+        return result
 
-    # If the matchstick count is odd, print the largest number as '7' followed by (n - 3) / 2 '1's
-    if n % 2:
-        print('7' + '1' * ((n - 3) // 2))
-    # If the matchstick count is even, print the largest number as n / 2 '1's
-    else:
-        print('1' * (n // 2))
+    # For n > 20, we need to calculate the number of '8's and the leading number
+    digits = (n // 7) - 3
+    index = (n % 7) + 12
+
+    res = str(sol[index])
+
+    # Append '8's to the leading number
+    for _ in range(digits + 1):
+        res += "8"
+
+    # Store the result in the dictionary for future reference
+    computed_numbers[n] = res
+    return res
+
+# Function to calculate largest possible number with n matchsticks
+def get_max(n):
+    res = ""
+
+    # If n is odd, we start with '7' (requires 3 matchsticks) and then add as many '1's as possible
+    if n % 2 == 1:
+        res += "7"
+        n -= 3
+
+    # If n is even, we add as many '1's as possible
+    for _ in range(n // 2):
+        res += "1"
+
+    return res
+
+# Function to solve a single case
+def solve_case(n):
+    smallest = get_min(n)
+    largest = get_max(n)
+    return f"{smallest} {largest}"
+
+# Main function
+def main():
+    # Number of test cases
+    t = int(input())
+    cases = []
+
+    # Read all test cases
+    for _ in range(t):
+        n = int(input())
+        cases.append(n)
+
+    # Solve all test cases
+    results = [solve_case(n) for n in cases]
+
+    # Print the results
+    for result in results:
+        print(result)
+
+# Entry point of the script
+if __name__ == "__main__":
+    main()
