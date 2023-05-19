@@ -1,52 +1,38 @@
-# Dictionary for memoization
-computed_numbers = {}
+
 
 # Function to calculate smallest possible number with n matchsticks
 def get_min(n):
-    # If we have previously computed this, return the stored value
-    if n in computed_numbers:
-        return computed_numbers[n]
+    # Initialize the list with None for all indices
+    dp = [None for _ in range(n+1)]
+  
+    # The first 21 values are known directly.
+    # Here, I'm using Python's zero-based indexing, so there's an offset of 2
+    smallest_nums = [1, 7, 4, 2, 6, 8, 10, 18, 22, 20, 28, 68, 88, 108, 188, 200, 208, 288, 688, 888, 1088, 1888]
 
-    # Array of smallest numbers that can be made with 2 to 20 matchsticks
-    sol = [1, 7, 4, 2, 6, 8, 10, 18, 22, 20, 28, 68, 88, 108, 188, 200, 208, 288, 688, 888]
+    for i in range(2, n+1):
+        if i < len(smallest_nums):
+            # We already know the answer for this
+            dp[i] = str(smallest_nums[i-2])
+        else:
+            # Otherwise, calculate it based on previously known values
+            dp[i] = dp[i-2] + '1' if 21 <= i <= 23 and int(dp[i-2] + '1') < int(dp[i-7] + '8') else dp[i-7] + '8'
 
-    # If n is less than or equal to 20, we can directly index into the array
-    if n <= 20:
-        result = str(sol[n - 2])
-        computed_numbers[n] = result
-        return result
+    # Return the result for n
+    return dp[n]
 
-    # For n > 20, we need to calculate the number of '8's and the leading number
-    digits = (n // 7) - 3
-    index = (n % 7) + 12
 
-    res = str(sol[index])
-
-    # Append '8's to the leading number
-    for _ in range(digits + 1):
-        res += "8"
-
-    # Store the result in the dictionary for future reference
-    computed_numbers[n] = res
-    return res
 
 # Function to calculate largest possible number with n matchsticks
 def get_max(n):
-    res = ""
-
     # If n is odd, we start with '7' (requires 3 matchsticks) and then add as many '1's as possible
     if n % 2 == 1:
-        res += "7"
-        n -= 3
+        return "7" + "1" * ((n - 3) // 2)
+    else:
+        return "1" * (n // 2)
 
-    # If n is even, we add as many '1's as possible
-    for _ in range(n // 2):
-        res += "1"
 
-    return res
-
-# Function to solve a single case
-def solve_case(n):
+# Function to precomputed_20ve a single case
+def precomputed_20ve_case(n):
     smallest = get_min(n)
     largest = get_max(n)
     return f"{smallest} {largest}"
@@ -62,8 +48,8 @@ def main():
         n = int(input())
         cases.append(n)
 
-    # Solve all test cases
-    results = [solve_case(n) for n in cases]
+    # precomputed_20ve all test cases
+    results = [precomputed_20ve_case(n) for n in cases]
 
     # Print the results
     for result in results:
