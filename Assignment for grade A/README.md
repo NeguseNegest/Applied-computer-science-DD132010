@@ -6,7 +6,7 @@ Matchsticks are ideal tools to represent numbers. A common way to represent the 
 This is identical to how numbers are displayed on an ordinary alarm clock. With a given number of matchsticks you can generate a wide range of numbers. We are wondering what the smallest and largest numbers are that can be created by using all your matchsticks.
 Input
 On the first line one positive number: the number of testcases, at most 100. After that per testcase:
-- One line with an integer $n(2 \leq n \leq 100)$ : the number of matchsticks you have.
+- One line with an integer $n,(2 \leq n \leq 100)$ : the number of matchsticks you have.
 
 Output
 Per testcase:
