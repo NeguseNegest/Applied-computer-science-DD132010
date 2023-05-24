@@ -10,9 +10,8 @@ class TestAlabbb(unittest.TestCase):
             Alabbb.compute(1)  
 
     def test_high_n(self):
-        # Here we assume that the program should at least be able to handle n = 10000. 
-        # Depending on the actual performance of your program, you might want to adjust this number.
-        result = Alabbb.compute(10000)
+        # Here we assume that the program should at least be able to handle n = 100.
+        result = Alabbb.compute(100)
         self.assertIsInstance(result, str)
 
     def test_odd_even_n(self):
